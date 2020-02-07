@@ -1,12 +1,20 @@
 using System;
+using System.Collections.Generic;
+using StockExchangeBroker.Infrastructure;
+using StockExhangeBroker.Api;
 using Xunit;
 
 namespace StockExchangeBroker.features
 {
     public class Scenario_ViewCurrentPortfolio
     {
+        private ExchangeInterface _exchangeInterface;
+        private StockRepositoryDummy _stockRepositoryDummy;
+        private IEnumerable<Stock> _portFolio;
+
         public Scenario_ViewCurrentPortfolio()
         {
+            _exchangeInterface = new ExchangeInterface();
             //Given
             I_bought_shares(OldSchoolWaterfallSoftwareLimited, 1000, new DateTime(1990, 2, 14));
             I_bought_shares(CrafterMastersLimited, 400, new DateTime(2016, 6, 10));
@@ -42,22 +50,22 @@ namespace StockExchangeBroker.features
         
         private void I_print_the_portfolio()
         {
-            throw new NotImplementedException();
+            _portFolio = _exchangeInterface.ViewPortfolio();
         }
 
         private void Current_share_value_of(string stock, decimal stockValue)
         {
-            throw new NotImplementedException();
+            _stockRepositoryDummy.SetCurrentStockValue(stock, stockValue);
         }
 
         private void I_sold_shares(string stock, int nrOfStocks, DateTime sellDate)
         {
-            throw new NotImplementedException();
+            _exchangeInterface.SellStocks(stock, nrOfStocks, sellDate);
         }
 
         private void I_bought_shares(string stock, int nrOfStocks, DateTime buyDate)
         {
-            throw new NotImplementedException();
+           _exchangeInterface.BuyStock(stock,nrOfStocks, buyDate);
         }
 
         private string XpPractitionersIncorporated { get; set; }
@@ -67,5 +75,12 @@ namespace StockExchangeBroker.features
         private string OldSchoolWaterfallSoftwareLimited { get; set; }
 
         #endregion
+    }
+
+    internal class StockRepositoryDummy : IStockRepository
+    {
+        public void SetCurrentStockValue(string stock, decimal stockValue)
+        {
+        }
     }
 }
