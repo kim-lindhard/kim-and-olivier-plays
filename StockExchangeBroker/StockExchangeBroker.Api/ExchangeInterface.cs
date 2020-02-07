@@ -18,6 +18,11 @@ namespace StockExhangeBroker.Api
         public IEnumerable<Stock> ViewPortfolio()
         {
             return Enumerable.Empty<Stock>();
-        } 
+        }
+
+        public string PrintPortfolio()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
